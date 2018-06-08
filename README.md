@@ -45,48 +45,13 @@ def get_letter_differences(s1, s2):
     return delta
 ```
 
+This is a "sliding window" solution. I created a dictionary as a counter to store the elements as keys, and their number of appearance as values. I came up with this data structure intuitively. We have to go through the string only once to get it (O(n)). A helper function is defined to calculate the difference of two "counter dictionaries". In worst case, each character appears only once, no overlap between the two strings, so we go through both string once (O(n)). By moving one position toward the right at a time until we find the substring, the worst case is again O(n).
 
-```python
-# test cases
+The time efficiency is O(n).  
+The space efficiency is O(n).  
+n is the sum of the length of the two strings.
 
-s1 = 'abc'
-t1 = ''
-print question1(s1, t1)
-# should print "False"
-
-s2 = ''
-t2 = 'aaa'
-print question1(s2, t2)
-# should print "False"
-
-s3 = 'abc'
-t3 = 'abcde'
-print question1(s3, t3)
-# should print "False"
-
-s4='abcdefg'
-t4='dfgcbae'
-print question1(s4, t4)
-# should print "True"
-
-s5='abcdefgllqqq'
-t5='dfgcbae'
-print question1(s5, t5)
-# should print "True"
-
-s6 = ';sdlkfjds;'
-t6 = 'kfl'
-print question1(s6, t6)
-# should print "True"
-```
-
-    False
-    False
-    False
-    True
-    True
-    True
-
+---
 
 ### Question 2
 Given a string `a`, find the longest palindromic substring contained in `a`. Your function definition should look like `question2(a)`, and return a string.
@@ -116,50 +81,13 @@ def question2(a):
     return p
 ```
 
+This is a very time and space costly solution, but with only a few lines and intuitive thinking. In the n'th recursion, 2^n substrings are created, until only one or two elements are left.
 
-```python
-a = ''
-print question2(a)
-# should print nothing (None)
+The time efficiency is O(2^n).  
+The space efficiency is O(2^1*(n-1) + 2^2*(n-2) + ... + 2^(n-1)*1), approximately O(n*2^n).  
+n is the length of the string.
 
-a = 'z'
-print question2(a)
-# should print 'z'
-
-a = 'bab'
-print question2(a)
-# should print 'bab'
-
-a = 'amom'
-print question2(a)
-# should print 'mom'
-
-a = 'bamomb'
-print question2(a)
-# should print 'mom'
-
-a = 'zzbabab'
-print question2(a)
-# should print 'babab'
-
-a = 'bababzz'
-print question2(a)
-# should print 'babab'
-
-a = 'cdadzzmomc'
-print question2(a)
-# should print 'dad'
-```
-
-    
-    z
-    bab
-    mom
-    mom
-    babab
-    babab
-    dad
-
+---
 
 ### Question 3
 Given an undirected graph G, find the minimum spanning tree within G. A minimum spanning tree connects all vertices in a graph with the smallest possible total weight of edges. Your function should take in and return an adjacency list structured like this:
@@ -237,37 +165,13 @@ def question3(G):
     return "The graph is not connected. The minimum spanning tree doesn't exist."
 ```
 
+This solution utilizes the `heapq` package. A list of tuples is used to store the edge weights, two vertices that are connected by the edge, and to pop the current minimum edge. Whenever a new closest vertex is found, it is added to the output dictionary. When initializing the list, every vertex is "pushed" (O(V)). Every edge from each vertex is checked in this algorithm (O(E+V)).
 
-```python
-# test case
+The time efficiency is O(E+2V), approximately O(E+V).  
+The space complexity is O(E+2V), also O(E+V).  
+E is the number of edges. V is the number of vertices.
 
-G = {'A': [('B', 1), ('C', 7)],
-     'B': [('A', 1), ('C', 2)],
-     'C': [('A', 7), ('B', 2)]}
-print question3(G)
-# should print {'A': [('B', 1)], 'B': [('A', 1), ('C', 2)], 'C': [('B', 2)]}
-
-G = {'A': [('B', 1), ('C', 7)],
-     'B': [('A', 1), ('C', 2)],
-     'C': [('A', 7), ('B', 2)],
-     'D': []}
-print question3(G)
-# should print "The graph is not connected. The minimum spanning tree doesn't exist."
-
-G = {'A': [('B', 8), ('C', 7), ('E', 2)],
-     'B': [('A', 8), ('C', 4), ('D', 5)],
-     'C': [('A', 7), ('B', 4), ('D', 1), ('E', 6)],
-     'D': [('B', 5), ('C', 1), ('E', 3)],
-     'E': [('A', 2), ('C', 6), ('D', 3)]}
-print question3(G)
-# should print
-# {'A': [('E', 2)], 'C': [('D', 1), ('B', 4)], 'B': [('C', 4)], 'E': [('A', 2), ('D', 3)], 'D': [('E', 3), ('C', 1)]}
-```
-
-    {'A': [('B', 1)], 'C': [('B', 2)], 'B': [('A', 1), ('C', 2)]}
-    The graph is not connected. The minimum spanning tree doesn't exist.
-    {'A': [('E', 2)], 'C': [('D', 1), ('B', 4)], 'B': [('C', 4)], 'E': [('A', 2), ('D', 3)], 'D': [('E', 3), ('C', 1)]}
-
+---
 
 ### Question 4
 Find the least common ancestor between two nodes on a binary search tree. The least common ancestor is the farthest node from the root that is an ancestor of both nodes. For example, the root is a common ancestor of all nodes on the tree, but if both nodes are descendents of the root's left child, then that left child might be the lowest common ancestor. You can assume that both nodes are in the tree, and the tree itself adheres to all BST properties. The function definition should look like `question4(T, r, n1, n2)`, where `T` is the tree represented as a matrix, where the index of the list is equal to the integer stored in that node and a `1` represents a child node, `r` is a non-negative integer representing the root, and `n1` and `n2` are non-negative integers representing the two nodes in no particular order. For example, one test case might be
@@ -303,56 +207,12 @@ def sidedness(parent, child1, child2):
     else:
         return False
 ```
+We are trying to find the first node that n1 and n2 are on different sides of that node. The worst case would be an unbalanced tree with n1 and n2 at the end. In each recursion, the children of the current parent is checked by going through the "row" of the matrix. So it's O(n) in O(n), which is O(n^2).
 
+The time efficiency is O(nn).  
+The space efficiency is O(n), since the parent of each recursion is temporarily stored in the stack when going down the tree.
 
-```python
-T = [[0, 1, 0, 0, 0],
-     [0, 0, 0, 0, 0],
-     [0, 0, 0, 0, 0],
-     [1, 0, 0, 0, 1],
-     [0, 0, 0, 0, 0]]
-print question4(T, 3, 1, 4)
-# should print 3
-
-T = [[0, 0, 0, 0, 0],
-     [1, 0, 0, 0, 0],
-     [0, 1, 0, 0, 0],
-     [0, 0, 0, 0, 0],
-     [0, 0, 0, 0, 0]]
-print question4(T, 2, 1, 0)
-# should print 1
-
-T = [[0, 0, 0, 0, 0],
-     [1, 0, 0, 0, 0],
-     [0, 1, 0, 1, 0],
-     [0, 0, 0, 0, 1],
-     [0, 0, 0, 0, 0]]
-print question4(T, 2, 0, 4)
-# should print 2
-
-T = [[0, 0, 0, 0, 0],
-     [0, 0, 0, 0, 0],
-     [0, 0, 0, 1, 0],
-     [0, 0, 0, 0, 1],
-     [0, 0, 0, 0, 0]]
-print question4(T, 2, 3, 4)
-# should print 3
-
-T = [[0, 0, 0, 0, 0],
-     [0, 0, 0, 0, 0],
-     [0, 1, 0, 1, 0],
-     [0, 0, 0, 0, 1],
-     [0, 0, 0, 0, 0]]
-print question4(T, 2, 3, 4)
-# should print 3
-```
-
-    3
-    1
-    2
-    3
-    3
-
+---
 
 ### Question 5
 Find the element in a singly linked list that's `m` elements from the end. For example, if a linked list has 5 elements, the 3rd element from the end is the 3rd element. The function definition should look like `question5(ll, m)`, where `ll` is the first node of a linked list and `m` is the "mth number from the end". You should copy/paste the `Node` class below to use as a representation of a node in the linked list. Return the value of the node at that position.
@@ -388,43 +248,7 @@ def question5(ll, m):
         return ruler[0].data
     return 'm is longer than the linked list.'
 ```
+The first thought was creating a queue as a ruler of length m to move from the head to the tail of the linked list. But actually only the beginning and the end of the ruler are necessary. So we merely have to go through the linked list once, and two values are stored and updated.
 
-
-```python
-# test cases
-
-ll = Node(1)
-ll.next = Node(2)
-ll.next.next = Node(3)
-ll.next.next.next = Node(4)
-ll.next.next.next.next = Node(5)
-
-print question5(ll, 1)
-# should return 5
-
-print question5(ll, 3)
-# should return 3
-
-print question5(ll, 7)
-# should return "m is longer than the linked list."
-
-ll = Node(1)
-
-print question5(ll, 1)
-# should print 1
-
-print question5(ll, 2)
-# should return "m is longer than the linked list."
-
-ll = None
-
-print question5(ll, 3)
-# should return "m is longer than the linked list."
-```
-
-    5
-    3
-    m is longer than the linked list.
-    1
-    m is longer than the linked list.
-    m is longer than the linked list.
+The time efficiency is O(n).  
+The space efficiency is O(1).
