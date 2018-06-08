@@ -242,4 +242,4 @@ class Test(unittest.TestCase):
         self.assertEqual(question5(ll, 3), 'm is longer than the linked list.')
         
 if __name__ == '__main__':
-    unittest.main(argv=['ignored', '-v'], exit=False)
+    unittest.main()
